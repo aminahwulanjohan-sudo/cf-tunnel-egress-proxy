@@ -1,0 +1,23 @@
+# Template hosts override untuk cloudflared.
+# Salin ke /tmp/hosts.cf (atau lokasi lain, lalu set HOSTS_FILE).
+# File ini di-bind-mount ke /etc/hosts di dalam mount namespace.
+#
+# PENTING: file ini harus LENGKAP — di dalam namespace, inilah satu-satunya
+# sumber resolusi nama (tidak digabung dengan /etc/hosts asli).
+
+127.0.0.1 localhost
+::1 localhost ip6-localhost ip6-loopback
+
+# --- Cloudflare Tunnel: belokkan ke socat relay lokal ---
+127.0.0.1 region1.v2.argotunnel.com
+127.0.0.1 region2.v2.argotunnel.com
+
+# --- Cloudflare API untuk Quick Tunnel registration ---
+# via transparent proxy / intercepting proxy lokal (jika ada).
+# Jika platform kamu TIDAK punya transparent proxy di 127.0.0.1:443,
+# hapus baris ini dan pastikan DNS normal bisa resolve api.trycloudflare.com
+# (atau lewat proxy dengan HTTPS_PROXY).
+127.0.0.1 api.trycloudflare.com
+
+# --- Egress proxy (sesuaikan dengan proxy kamu) ---
+# 198.19.0.1 hatch-egress-proxy   # contoh: uncomment & sesuaikan
